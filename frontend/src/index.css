@@ -1,0 +1,161 @@
+#emergent-badge {
+  display: none !important;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 240 14% 1%;
+        --foreground: 0 0% 100%;
+        --card: 240 14% 5%;
+        --card-foreground: 0 0% 100%;
+        --popover: 240 14% 5%;
+        --popover-foreground: 0 0% 100%;
+        --primary: 187 100% 50%;
+        --primary-foreground: 240 14% 1%;
+        --secondary: 342 100% 50%;
+        --secondary-foreground: 0 0% 100%;
+        --muted: 240 10% 10%;
+        --muted-foreground: 240 5% 65%;
+        --accent: 240 10% 10%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 342 100% 50%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 0 0% 100% / 0.1;
+        --input: 0 0% 100% / 0.1;
+        --ring: 187 100% 50%;
+        --chart-1: 187 100% 50%;
+        --chart-2: 342 100% 50%;
+        --chart-3: 120 60% 50%;
+        --chart-4: 45 100% 60%;
+        --chart-5: 270 70% 60%;
+        --radius: 0.125rem;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-family: 'JetBrains Mono', monospace;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Unbounded', sans-serif;
+    }
+}
+
+@layer base {
+    [data-debug-wrapper="true"] {
+        display: contents !important;
+    }
+    [data-debug-wrapper="true"] > * {
+        margin-left: inherit;
+        margin-right: inherit;
+        margin-top: inherit;
+        margin-bottom: inherit;
+        padding-left: inherit;
+        padding-right: inherit;
+        padding-top: inherit;
+        padding-bottom: inherit;
+        column-gap: inherit;
+        row-gap: inherit;
+        gap: inherit;
+        border-left-width: inherit;
+        border-right-width: inherit;
+        border-top-width: inherit;
+        border-bottom-width: inherit;
+        border-left-style: inherit;
+        border-right-style: inherit;
+        border-top-style: inherit;
+        border-bottom-style: inherit;
+        border-left-color: inherit;
+        border-right-color: inherit;
+        border-top-color: inherit;
+        border-bottom-color: inherit;
+    }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #030305;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 229, 255, 0.3);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 229, 255, 0.5);
+}
+
+/* Neon glow animation */
+@keyframes neonPulse {
+    0%, 100% { box-shadow: 0 0 5px rgba(0, 229, 255, 0.3), 0 0 10px rgba(0, 229, 255, 0.1); }
+    50% { box-shadow: 0 0 10px rgba(0, 229, 255, 0.5), 0 0 20px rgba(0, 229, 255, 0.2); }
+}
+
+@keyframes borderTrace {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes countUp {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.neon-pulse {
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-count-up {
+    animation: countUp 0.5s ease-out forwards;
+}
+
+/* Tracing border effect */
+.tracing-border {
+    position: relative;
+}
+.tracing-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(90deg, #00E5FF, #FF0055, #00E5FF);
+    background-size: 200% 200%;
+    animation: borderTrace 3s linear infinite;
+    z-index: -1;
+    border-radius: 2px;
+}
+
+/* Grain texture overlay */
+.grain-overlay::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+}
