@@ -144,7 +144,12 @@ career-path-predictor/
 ## 📸 Screenshots
 
 ### Login Page
-![Login](https://via.placeholder.com/800x400/030305/00E5FF?text=Career+Path+Predictor)
+![Login](screenshots/loginpage.png)
+![Dashboard](screenshots/dashboard1.png)
+![Dashboard](screenshots/dashboard2.png)
+![Dashboard](screenshots/dashboard3.png)
+![Model Lab](screenshots/model-lab1.png)
+![Model Lab](screenshots/model-lab2.png)
 
 ---
 
