@@ -15,8 +15,18 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-CAREERS = ["Data Scientist", "Developer", "Manager", "Designer"]
-INTERESTS = ["data", "coding", "management", "design"]
+CAREERS = [
+    "Data Scientist", "Developer", "Manager", "Designer",
+    "DevOps Engineer", "ML Engineer", "Cybersecurity Analyst",
+    "Product Manager", "UX Designer", "Business Analyst",
+    "Cloud Architect", "Game Developer"
+]
+
+INTERESTS = [
+    "data", "coding", "management", "design",
+    "infrastructure", "ai_ml", "security", "product"
+]
+
 FEATURES = ["math_score", "programming_skill", "communication_skill", "logical_reasoning", "interest_encoded"]
 FEATURE_DISPLAY = ["Math Score", "Programming Skill", "Communication Skill", "Logical Reasoning", "Interest"]
 
@@ -40,7 +50,110 @@ SKILL_RECOMMENDATIONS = {
         "skills_to_improve": ["UI/UX Principles", "Figma & Design Tools", "Color Theory & Typography", "User Research Methods"],
         "resources": ["Dribbble Daily Challenges", "Google UX Design Certificate", "Design Thinking Workshops"],
         "target_profile": {"math_score": 50, "programming_skill": 60, "communication_skill": 80, "logical_reasoning": 65}
+    },
+    "DevOps Engineer": {
+        "skills_to_improve": ["CI/CD Pipelines", "Docker & Kubernetes", "Infrastructure as Code (Terraform)", "Linux Administration"],
+        "resources": ["Linux Foundation Courses", "Docker Mastery (Udemy)", "Terraform Documentation"],
+        "target_profile": {"math_score": 65, "programming_skill": 85, "communication_skill": 60, "logical_reasoning": 80}
+    },
+    "ML Engineer": {
+        "skills_to_improve": ["Deep Learning (PyTorch/TensorFlow)", "MLOps & Model Deployment", "Feature Engineering", "Distributed Computing"],
+        "resources": ["fast.ai Courses", "MLflow Documentation", "Papers With Code"],
+        "target_profile": {"math_score": 88, "programming_skill": 90, "communication_skill": 55, "logical_reasoning": 88}
+    },
+    "Cybersecurity Analyst": {
+        "skills_to_improve": ["Network Security", "Penetration Testing", "SIEM Tools", "Threat Intelligence"],
+        "resources": ["TryHackMe", "CompTIA Security+", "OWASP Top 10"],
+        "target_profile": {"math_score": 70, "programming_skill": 75, "communication_skill": 65, "logical_reasoning": 85}
+    },
+    "Product Manager": {
+        "skills_to_improve": ["Product Roadmapping", "A/B Testing & Analytics", "Stakeholder Management", "User Story Writing"],
+        "resources": ["Lenny's Newsletter", "ProductPlan Blog", "Reforge Programs"],
+        "target_profile": {"math_score": 65, "programming_skill": 55, "communication_skill": 90, "logical_reasoning": 80}
+    },
+    "UX Designer": {
+        "skills_to_improve": ["User Research & Interviews", "Wireframing & Prototyping", "Accessibility (WCAG)", "Usability Testing"],
+        "resources": ["Nielsen Norman Group", "Figma Academy", "UX Collective"],
+        "target_profile": {"math_score": 45, "programming_skill": 55, "communication_skill": 85, "logical_reasoning": 70}
+    },
+    "Business Analyst": {
+        "skills_to_improve": ["Requirements Gathering", "SQL & Excel", "Business Process Modeling", "Data Visualization"],
+        "resources": ["CBAP Certification", "Tableau Public", "BABOK Guide"],
+        "target_profile": {"math_score": 72, "programming_skill": 55, "communication_skill": 85, "logical_reasoning": 78}
+    },
+    "Cloud Architect": {
+        "skills_to_improve": ["AWS/Azure/GCP Architecture", "Microservices Design", "Cost Optimization", "Security & Compliance"],
+        "resources": ["AWS Solutions Architect Cert", "Google Cloud Skills Boost", "Azure Architecture Center"],
+        "target_profile": {"math_score": 75, "programming_skill": 88, "communication_skill": 70, "logical_reasoning": 85}
+    },
+    "Game Developer": {
+        "skills_to_improve": ["Game Engine (Unity/Unreal)", "3D Math & Physics", "Shader Programming", "Game Design Patterns"],
+        "resources": ["Unity Learn Platform", "Game Programming Patterns Book", "Brackeys YouTube"],
+        "target_profile": {"math_score": 80, "programming_skill": 88, "communication_skill": 50, "logical_reasoning": 82}
     }
+}
+
+CAREER_ROADMAPS = {
+    "Data Scientist": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Learn Python & pandas", "Master statistics fundamentals", "Complete SQL basics"], "milestone": "First data analysis project"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Build ML models with scikit-learn", "Practice on Kaggle", "Learn data visualization"], "milestone": "Kaggle Bronze medal"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Deep learning with PyTorch", "Build end-to-end ML pipeline", "Contribute to open source"], "milestone": "Junior DS role application"}
+    ],
+    "Developer": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Master core language (Python/JS)", "Learn Git & version control", "Build 3 small projects"], "milestone": "First GitHub portfolio"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Learn a framework (React/Django)", "Practice DSA on LeetCode", "Contribute to open source"], "milestone": "50 LeetCode problems solved"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["System design study", "Build full-stack app", "Prepare for technical interviews"], "milestone": "First developer job offer"}
+    ],
+    "ML Engineer": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Strong Python + math fundamentals", "Learn core ML algorithms", "Docker basics"], "milestone": "First trained model deployed locally"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Deep learning with PyTorch/TF", "MLflow for experiment tracking", "REST API for model serving"], "milestone": "Model served as API"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Kubernetes for ML workloads", "Feature store setup", "A/B testing models in production"], "milestone": "Production ML system built"}
+    ],
+    "DevOps Engineer": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Linux mastery", "Git & CI/CD basics (GitHub Actions)", "Docker fundamentals"], "milestone": "First automated pipeline"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Kubernetes orchestration", "Terraform IaC", "Monitoring with Prometheus/Grafana"], "milestone": "K8s cluster deployed"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Multi-cloud strategy", "Security hardening", "SRE practices"], "milestone": "AWS/GCP certification"}
+    ],
+    "Product Manager": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Learn product frameworks (Jobs-to-be-Done)", "Study competitor products", "Shadow engineering & design teams"], "milestone": "First PRD written"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Run user interviews", "A/B test a feature", "Define KPIs & metrics"], "milestone": "Feature shipped to production"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Own product roadmap", "Stakeholder presentations", "Data-driven prioritization"], "milestone": "PM role at target company"}
+    ],
+    "Cybersecurity Analyst": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["CompTIA Security+ study", "TryHackMe beginner paths", "Networking fundamentals"], "milestone": "Security+ certification"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Penetration testing basics", "SIEM tools (Splunk)", "CTF competitions"], "milestone": "First CTF flag captured"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Bug bounty programs", "Incident response drills", "OSCP preparation"], "milestone": "Bug bounty first payout"}
+    ],
+    "UX Designer": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Learn Figma", "Study design principles", "Redesign 3 existing apps"], "milestone": "First design portfolio piece"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Conduct user interviews", "Build interactive prototypes", "Accessibility audits"], "milestone": "Complete case study published"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Design system creation", "Usability testing", "Collaborate with devs on handoff"], "milestone": "UX role at product company"}
+    ],
+    "Business Analyst": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Excel & SQL mastery", "Learn BPMN notation", "Study Agile basics"], "milestone": "First business process mapped"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Requirements elicitation practice", "Tableau/Power BI dashboards", "Stakeholder workshops"], "milestone": "Dashboard built for real data"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["CBAP certification study", "End-to-end project BA role", "Presentation to C-suite"], "milestone": "BA certification earned"}
+    ],
+    "Cloud Architect": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["AWS/Azure/GCP fundamentals", "Core networking concepts", "IAM & security basics"], "milestone": "Cloud practitioner cert"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Solutions architect cert", "Design multi-tier architectures", "Cost optimization projects"], "milestone": "Solutions architect certification"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Multi-cloud strategies", "Microservices architecture", "Enterprise migration planning"], "milestone": "Lead first cloud migration"}
+    ],
+    "Game Developer": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Pick Unity or Unreal", "Complete beginner tutorials", "Build a Pong/Snake clone"], "milestone": "First playable game"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["3D math & physics", "Shader basics", "Game jam participation"], "milestone": "Game jam submission"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Multiplayer networking", "Asset optimization", "Publish on itch.io"], "milestone": "First published game"}
+    ],
+    "Manager": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Agile/Scrum fundamentals", "1-on-1 meeting skills", "Conflict resolution basics"], "milestone": "Lead first sprint"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["PMP certification study", "OKR goal setting", "Performance review training"], "milestone": "PMP certification"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Cross-functional leadership", "Budget management", "Hiring & onboarding"], "milestone": "Manage team of 5+"}
+    ],
+    "Designer": [
+        {"phase": "Foundation (0-3 months)", "tasks": ["Adobe Creative Suite basics", "Color theory & typography", "Build first portfolio"], "milestone": "5-piece portfolio"},
+        {"phase": "Intermediate (4-6 months)", "tasks": ["Brand identity projects", "Motion design basics", "Client freelance work"], "milestone": "First paid design project"},
+        {"phase": "Advanced (7-12 months)", "tasks": ["Design system creation", "Art direction", "Agency or in-house application"], "milestone": "Full-time designer role"}
+    ]
 }
 
 MODEL_CONFIGS = {
@@ -71,40 +184,41 @@ MODEL_CONFIGS = {
     }
 }
 
+CAREER_PROFILES = {
+    "Data Scientist":        (82, 10, 75, 12, 55, 15, 80, 10, {"data": 0.75, "ai_ml": 0.20, "coding": 0.05}),
+    "Developer":             (68, 12, 88,  8, 50, 15, 75, 12, {"coding": 0.80, "data": 0.10, "infrastructure": 0.10}),
+    "Manager":               (55, 15, 45, 18, 88,  8, 65, 12, {"management": 0.80, "product": 0.20}),
+    "Designer":              (50, 15, 55, 18, 75, 12, 60, 14, {"design": 0.75, "management": 0.15, "product": 0.10}),
+    "DevOps Engineer":       (65, 12, 85, 10, 60, 14, 80, 10, {"infrastructure": 0.75, "coding": 0.15, "security": 0.10}),
+    "ML Engineer":           (88,  8, 90,  8, 52, 14, 88,  8, {"ai_ml": 0.70, "coding": 0.20, "data": 0.10}),
+    "Cybersecurity Analyst": (70, 12, 75, 12, 65, 14, 85,  9, {"security": 0.80, "infrastructure": 0.15, "coding": 0.05}),
+    "Product Manager":       (65, 12, 55, 15, 90,  8, 80, 10, {"product": 0.75, "management": 0.20, "data": 0.05}),
+    "UX Designer":           (45, 14, 55, 16, 85, 10, 70, 12, {"design": 0.80, "product": 0.15, "management": 0.05}),
+    "Business Analyst":      (72, 12, 55, 15, 85,  9, 78, 10, {"data": 0.50, "management": 0.30, "product": 0.20}),
+    "Cloud Architect":       (75, 10, 88,  9, 70, 12, 85,  9, {"infrastructure": 0.70, "coding": 0.20, "security": 0.10}),
+    "Game Developer":        (80, 10, 88,  9, 50, 15, 82, 10, {"coding": 0.60, "design": 0.30, "ai_ml": 0.10}),
+}
 
-def generate_dataset(n_samples=2000):
+
+def generate_dataset(n_samples=5000):
     np.random.seed(42)
     data = []
+    careers_list = list(CAREER_PROFILES.keys())
     for _ in range(n_samples):
-        career = np.random.choice(CAREERS)
-        if career == "Data Scientist":
-            math = np.clip(np.random.normal(82, 10), 20, 100)
-            prog = np.clip(np.random.normal(75, 12), 20, 100)
-            comm = np.clip(np.random.normal(55, 15), 20, 100)
-            logic = np.clip(np.random.normal(80, 10), 20, 100)
-            interest = np.random.choice(["data", "coding"], p=[0.8, 0.2])
-        elif career == "Developer":
-            math = np.clip(np.random.normal(68, 12), 20, 100)
-            prog = np.clip(np.random.normal(88, 8), 20, 100)
-            comm = np.clip(np.random.normal(50, 15), 20, 100)
-            logic = np.clip(np.random.normal(75, 12), 20, 100)
-            interest = np.random.choice(["coding", "data"], p=[0.85, 0.15])
-        elif career == "Manager":
-            math = np.clip(np.random.normal(55, 15), 20, 100)
-            prog = np.clip(np.random.normal(45, 18), 20, 100)
-            comm = np.clip(np.random.normal(88, 8), 20, 100)
-            logic = np.clip(np.random.normal(65, 12), 20, 100)
-            interest = np.random.choice(["management", "design"], p=[0.85, 0.15])
-        else:
-            math = np.clip(np.random.normal(50, 15), 20, 100)
-            prog = np.clip(np.random.normal(55, 18), 20, 100)
-            comm = np.clip(np.random.normal(75, 12), 20, 100)
-            logic = np.clip(np.random.normal(60, 14), 20, 100)
-            interest = np.random.choice(["design", "management"], p=[0.8, 0.2])
+        career = np.random.choice(careers_list)
+        mm, ms, pm, ps, cm, cs, lm, ls, int_w = CAREER_PROFILES[career]
+        math  = np.clip(np.random.normal(mm, ms), 10, 100)
+        prog  = np.clip(np.random.normal(pm, ps), 10, 100)
+        comm  = np.clip(np.random.normal(cm, cs), 10, 100)
+        logic = np.clip(np.random.normal(lm, ls), 10, 100)
+        interest = np.random.choice(list(int_w.keys()), p=list(int_w.values()))
         data.append({
-            "math_score": round(math), "programming_skill": round(prog),
-            "communication_skill": round(comm), "logical_reasoning": round(logic),
-            "interest": interest, "career": career
+            "math_score": round(math),
+            "programming_skill": round(prog),
+            "communication_skill": round(comm),
+            "logical_reasoning": round(logic),
+            "interest": interest,
+            "career": career
         })
     return pd.DataFrame(data)
 
@@ -138,26 +252,25 @@ class MultiModelPredictor:
 
     def train_all(self):
         self.df = generate_dataset()
-        self.df["interest_encoded"] = self.interest_encoder.fit_transform(self.df["interest"])
+        self.interest_encoder.fit(INTERESTS)
+        self.df["interest_encoded"] = self.interest_encoder.transform(self.df["interest"])
         X = self.df[FEATURES].values
         y = self.label_encoder.fit_transform(self.df["career"])
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             X, y, test_size=0.2, random_state=42
         )
-
         for key in MODEL_CONFIGS:
             model = self._create_model(key)
             model.fit(self.X_train, self.y_train)
             y_pred = model.predict(self.X_test)
             self.models[key] = model
             self.metrics[key] = {
-                "accuracy": round(float(accuracy_score(self.y_test, y_pred)), 4),
+                "accuracy":  round(float(accuracy_score(self.y_test, y_pred)), 4),
                 "precision": round(float(precision_score(self.y_test, y_pred, average="weighted")), 4),
-                "recall": round(float(recall_score(self.y_test, y_pred, average="weighted")), 4),
-                "f1_score": round(float(f1_score(self.y_test, y_pred, average="weighted")), 4),
+                "recall":    round(float(recall_score(self.y_test, y_pred, average="weighted")), 4),
+                "f1_score":  round(float(f1_score(self.y_test, y_pred, average="weighted")), 4),
             }
             logger.info(f"{MODEL_CONFIGS[key]['name']}: accuracy={self.metrics[key]['accuracy']}")
-
         self.is_trained = True
         return self.metrics
 
@@ -167,10 +280,10 @@ class MultiModelPredictor:
         y_pred = model.predict(self.X_test)
         self.models[model_key] = model
         self.metrics[model_key] = {
-            "accuracy": round(float(accuracy_score(self.y_test, y_pred)), 4),
+            "accuracy":  round(float(accuracy_score(self.y_test, y_pred)), 4),
             "precision": round(float(precision_score(self.y_test, y_pred, average="weighted")), 4),
-            "recall": round(float(recall_score(self.y_test, y_pred, average="weighted")), 4),
-            "f1_score": round(float(f1_score(self.y_test, y_pred, average="weighted")), 4),
+            "recall":    round(float(recall_score(self.y_test, y_pred, average="weighted")), 4),
+            "f1_score":  round(float(f1_score(self.y_test, y_pred, average="weighted")), 4),
         }
         return self.metrics[model_key]
 
@@ -182,7 +295,7 @@ class MultiModelPredictor:
         if hasattr(model, "predict_proba"):
             probabilities = model.predict_proba(features)[0]
         else:
-            probabilities = np.zeros(len(CAREERS))
+            probabilities = np.zeros(len(self.label_encoder.classes_))
             pred = model.predict(features)[0]
             probabilities[pred] = 1.0
 
@@ -203,10 +316,11 @@ class MultiModelPredictor:
         }
         skill_gaps = {s: max(0, target.get(s, 0) - user_skills.get(s, 0)) for s in target}
 
-        # Feature importance (only for tree-based models)
         feature_importance = {}
         if hasattr(model, "feature_importances_"):
             feature_importance = dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in model.feature_importances_]))
+
+        roadmap = CAREER_ROADMAPS.get(predicted_career, [])
 
         return {
             "predicted_career": predicted_career, "confidence": confidence,
@@ -217,6 +331,7 @@ class MultiModelPredictor:
                 "resources": recommendations.get("resources", []),
             },
             "skill_gaps": skill_gaps, "user_skills": user_skills, "target_skills": target,
+            "roadmap": roadmap,
         }
 
     def predict_all_models(self, math_score, programming_skill, communication_skill, logical_reasoning, interest):
@@ -244,14 +359,12 @@ class MultiModelPredictor:
 
     def get_roc_curve_data(self, model_key="random_forest"):
         model = self.models[model_key]
-        n_classes = len(CAREERS)
+        n_classes = len(self.label_encoder.classes_)
         y_test_bin = label_binarize(self.y_test, classes=list(range(n_classes)))
-
         if hasattr(model, "predict_proba"):
             y_score = model.predict_proba(self.X_test)
         else:
             return {"curves": [], "labels": self.label_encoder.classes_.tolist()}
-
         curves = []
         for i in range(n_classes):
             fpr, tpr, _ = roc_curve(y_test_bin[:, i], y_score[:, i])
@@ -273,10 +386,10 @@ class MultiModelPredictor:
         )
         return {
             "train_sizes": [int(x) for x in train_sizes_abs],
-            "train_mean": [round(float(x), 4) for x in train_scores.mean(axis=1)],
-            "train_std": [round(float(x), 4) for x in train_scores.std(axis=1)],
-            "val_mean": [round(float(x), 4) for x in val_scores.mean(axis=1)],
-            "val_std": [round(float(x), 4) for x in val_scores.std(axis=1)],
+            "train_mean":  [round(float(x), 4) for x in train_scores.mean(axis=1)],
+            "train_std":   [round(float(x), 4) for x in train_scores.std(axis=1)],
+            "val_mean":    [round(float(x), 4) for x in val_scores.mean(axis=1)],
+            "val_std":     [round(float(x), 4) for x in val_scores.std(axis=1)],
         }
 
     def get_cross_validation(self, model_key="random_forest", cv=5):
@@ -285,7 +398,7 @@ class MultiModelPredictor:
         return {
             "scores": [round(float(s), 4) for s in scores],
             "mean": round(float(scores.mean()), 4),
-            "std": round(float(scores.std()), 4),
+            "std":  round(float(scores.std()), 4),
             "folds": cv,
         }
 
@@ -306,9 +419,9 @@ class MultiModelPredictor:
         for col in ["math_score", "programming_skill", "communication_skill", "logical_reasoning"]:
             stats["feature_stats"][col] = {
                 "mean": round(float(self.df[col].mean()), 1),
-                "std": round(float(self.df[col].std()), 1),
-                "min": int(self.df[col].min()),
-                "max": int(self.df[col].max()),
+                "std":  round(float(self.df[col].std()), 1),
+                "min":  int(self.df[col].min()),
+                "max":  int(self.df[col].max()),
             }
         return {"data": records, "stats": stats, "page": page, "page_size": page_size, "total": total}
 
@@ -317,6 +430,14 @@ class MultiModelPredictor:
         if model and hasattr(model, "feature_importances_"):
             return dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in model.feature_importances_]))
         return {}
+
+    def get_career_comparison(self, career_a, career_b):
+        rec_a = SKILL_RECOMMENDATIONS.get(career_a, {})
+        rec_b = SKILL_RECOMMENDATIONS.get(career_b, {})
+        return {
+            "career_a": {"name": career_a, "target_profile": rec_a.get("target_profile", {}), "skills": rec_a.get("skills_to_improve", [])},
+            "career_b": {"name": career_b, "target_profile": rec_b.get("target_profile", {}), "skills": rec_b.get("skills_to_improve", [])},
+        }
 
 
 predictor = MultiModelPredictor()
