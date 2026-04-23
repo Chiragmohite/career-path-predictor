@@ -231,6 +231,12 @@ async def delete_prediction(prediction_id: str, current_user: dict = Depends(get
 async def get_careers():
     return {"careers": CAREERS, "interests": INTERESTS, "models": list(MODEL_CONFIGS.keys())}
 
+@api_router.get("/career-comparison")
+async def career_comparison(career_a: str, career_b: str, current_user: dict = Depends(get_current_user)):
+    if career_a not in CAREERS or career_b not in CAREERS:
+        raise HTTPException(status_code=400, detail=f"Careers must be from: {CAREERS}")
+    return predictor.get_career_comparison(career_a, career_b)
+
 @api_router.get("/")
 async def root():
     return {"message": "Career Path Predictor API", "status": "running"}
