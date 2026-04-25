@@ -441,3 +441,70 @@ class MultiModelPredictor:
 
 
 predictor = MultiModelPredictor()
+
+
+# ─── SHAP Explainability ─────────────────────────────────────
+def get_shap_explanation(self, math_score, programming_skill, communication_skill, logical_reasoning, interest, model_key="random_forest"):
+    import shap
+    interest_encoded = self.interest_encoder.transform([interest])[0]
+    features = np.array([[math_score, programming_skill, communication_skill, logical_reasoning, interest_encoded]])
+    model = self.models[model_key]
+
+    if model_key in ("random_forest", "gradient_boosting"):
+        explainer = shap.TreeExplainer(model)
+        shap_values = explainer.shap_values(features)
+        # shap_values shape: (n_classes, n_samples, n_features) or (n_samples, n_features, n_classes)
+        if isinstance(shap_values, list):
+            # one array per class
+            predicted_idx = int(model.predict(features)[0])
+            sv = shap_values[predicted_idx][0]
+        else:
+            predicted_idx = int(model.predict(features)[0])
+            sv = shap_values[0, :, predicted_idx] if shap_values.ndim == 3 else shap_values[0]
+    else:
+        explainer = shap.KernelExplainer(model.predict_proba, self.X_train[:100])
+        shap_values = explainer.shap_values(features, nsamples=50)
+        predicted_idx = int(model.predict(features)[0])
+        sv = shap_values[predicted_idx][0] if isinstance(shap_values, list) else shap_values[0]
+
+    result = []
+    for i, (fname, sval) in enumerate(zip(FEATURE_DISPLAY, sv)):
+        result.append({
+            "feature": fname,
+            "shap_value": round(float(sval), 4),
+            "direction": "positive" if sval > 0 else "negative",
+            "magnitude": round(abs(float(sval)), 4),
+        })
+    result.sort(key=lambda x: x["magnitude"], reverse=True)
+    return result
+
+
+# ─── What-If simulation ──────────────────────────────────────
+def what_if_simulate(self, base_profile: dict, model_key="random_forest"):
+    """For each skill, simulate +10 and -10 and see if career changes."""
+    skill_keys = ["math_score", "programming_skill", "communication_skill", "logical_reasoning"]
+    base_pred = self.predict(**base_profile, model_key=model_key)
+    base_career = base_pred["predicted_career"]
+    base_conf = base_pred["confidence"]
+    results = []
+
+    for sk in skill_keys:
+        for delta in [+10, -10]:
+            modified = dict(base_profile)
+            modified[sk] = max(0, min(100, modified[sk] + delta))
+            pred = self.predict(**modified, model_key=model_key)
+            results.append({
+                "skill": sk,
+                "delta": delta,
+                "new_value": modified[sk],
+                "new_career": pred["predicted_career"],
+                "new_confidence": pred["confidence"],
+                "career_changed": pred["predicted_career"] != base_career,
+                "confidence_change": round(pred["confidence"] - base_conf, 1),
+            })
+    return {"base_career": base_career, "base_confidence": base_conf, "simulations": results}
+
+
+MultiModelPredictor.get_shap_explanation = get_shap_explanation
+MultiModelPredictor.what_if_simulate = what_if_simulate
+
