@@ -1,0 +1,79 @@
+{
+  "theme": "dark",
+  "archetype": "7 (Electric & Neon)",
+  "emotional_tone": "Intelligent, futuristic, precise, authoritative AI brain.",
+  "typography": {
+    "heading_font": "Unbounded",
+    "body_font": "JetBrains Mono",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl font-black tracking-tighter uppercase",
+      "h2": "text-2xl sm:text-3xl font-bold tracking-tight",
+      "h3": "text-xl font-semibold tracking-tight",
+      "h4": "text-lg font-medium tracking-tight",
+      "body": "text-base leading-relaxed",
+      "small_label": "text-xs uppercase tracking-[0.2em] font-bold"
+    }
+  },
+  "colors": {
+    "background": "#030305",
+    "surface": "#0D0D12",
+    "surface_glass": "rgba(13, 13, 18, 0.7)",
+    "primary": "#00E5FF",
+    "primary_hover": "#33EEFF",
+    "secondary": "#FF0055",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#A1A1AA",
+    "border": "rgba(255, 255, 255, 0.1)",
+    "neon_glow_cyan": "drop-shadow-[0_0_8px_rgba(0,229,255,0.5)]",
+    "neon_glow_pink": "drop-shadow-[0_0_8px_rgba(255,0,85,0.5)]"
+  },
+  "layout_and_spacing": {
+    "philosophy": "The 'Control Room' Grid - Dense, data-heavy, edge-to-edge alignment.",
+    "container_padding": "p-6 md:p-8 lg:p-12",
+    "grid_gap": "gap-6",
+    "card_padding": "p-6",
+    "radius": "rounded-none md:rounded-sm",
+    "borders": "border border-white/10",
+    "surface_strategy": "Retro-Futurism (The Terminal Look). Deep black backgrounds with high-contrast neon accents. Cards have sharp edges and subtle inner borders."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#00E5FF] text-[#030305] font-bold uppercase tracking-widest hover:bg-[#33EEFF] hover:shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-all rounded-sm px-6 py-3",
+      "outline": "border border-[#00E5FF] text-[#00E5FF] font-bold uppercase tracking-widest hover:bg-[#00E5FF]/10 transition-all rounded-sm px-6 py-3"
+    },
+    "cards": "bg-[#0D0D12] border border-white/10 rounded-sm overflow-hidden hover:border-[#00E5FF]/40 transition-colors duration-300 relative",
+    "inputs": "bg-[#030305] border border-white/10 text-white rounded-sm focus:border-[#00E5FF] focus:ring-1 focus:ring-[#00E5FF] placeholder-white/30 font-mono",
+    "charts": {
+      "radar": "Use Recharts. Stroke color: #00E5FF, fill color: #00E5FF with 20% opacity. Axis lines in white/20. Text in JetBrains Mono.",
+      "bar": "Use Recharts. Bars in #00E5FF for positive feature importance, #FF0055 for negative/low. No rounded corners on bars."
+    },
+    "tracing_beam_card": "For the main prediction result card, use a glowing cyan border that mimics a tracing beam (achievable via a CSS animated gradient border mask)."
+  },
+  "animations": {
+    "hover": "Subtle neon glow on borders (`shadow-[0_0_15px_rgba(0,229,255,0.2)`)",
+    "entrance": "Staggered fade-in and slide-up for dashboard grid items using framer-motion.",
+    "data_reveal": "Number counters ticking up for confidence scores."
+  },
+  "media": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1645839078449-124db8a049fd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTJ8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGRhcmslMjBuZW9uJTIwbmV0d29yayUyMG5vZGVzfGVufDB8fHx8MTc3NDU4MTE4OXww&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract dark neon network nodes. Use this as an ultra-low opacity background overlay (bg-black/90 or similar) behind the login page or as a subtle texture in the dashboard header.",
+      "category": "background"
+    }
+  },
+  "accessibility_and_testing": {
+    "contrast": "Ensure pure white text on deep black surfaces. Neon cyan/pink used only for accents/borders or text against very dark backgrounds. Meet APCA standards.",
+    "testing_attributes": "All interactive elements must have data-testid (e.g., data-testid='predict-submit-button', data-testid='skill-input-math').",
+    "motion": "Respect prefers-reduced-motion."
+  },
+  "instructions_to_main_agent": [
+    "Install specific fonts via Google Fonts: Unbounded (Headings) and JetBrains Mono (Body/Data).",
+    "Install required icons: yarn add @phosphor-icons/react (for a technical, sharp look).",
+    "Use pure HTML/Tailwind for the main structural grid, prioritizing 'The Control Room' dense dashboard layout (grid-cols-1 md:grid-cols-3 lg:grid-cols-4).",
+    "Utilize Shadcn components for forms, select, slider (for skill inputs), and customize them by stripping heavy radii (`rounded-md` -> `rounded-sm`) and applying the neon theme.",
+    "For the radar chart and bar chart, use Recharts and theme them with #00E5FF and dark backgrounds. Turn off default tooltips or style them strictly to match the dark theme.",
+    "Do not use generic 'blue' or 'indigo'. Stick strictly to Cyan (#00E5FF) and Hot Pink (#FF0055).",
+    "Ensure the prediction result is the visual centerpiece. Give it an energetic, glowing treatment.",
+    "Login/Signup page should feel like accessing a secure, high-tech terminal."
+  ]
+}
