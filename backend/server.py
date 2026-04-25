@@ -349,4 +349,3 @@ logger = logging.getLogger(__name__)
 async def shutdown_db_client():
     client.close()
 
-
