@@ -1,32 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Crosshair, Brain, Code, MessageSquare, Lightbulb, Sparkles, Cpu } from "lucide-react";
 
 const MODEL_OPTIONS = [
-  { key: "random_forest", label: "Random Forest" },
-  { key: "knn", label: "K-Nearest Neighbors" },
-  { key: "svm", label: "Support Vector Machine" },
+  { key: "random_forest",     label: "Random Forest" },
+  { key: "knn",               label: "K-Nearest Neighbors" },
+  { key: "svm",               label: "Support Vector Machine" },
   { key: "gradient_boosting", label: "Gradient Boosting" },
-  { key: "mlp", label: "Neural Network (MLP)" },
+  { key: "mlp",               label: "Neural Network (MLP)" },
 ];
 
 const SKILL_CONFIG = [
-  { key: "math_score", label: "Math Score", icon: Brain, color: "#00E5FF" },
-  { key: "programming_skill", label: "Programming", icon: Code, color: "#00E5FF" },
-  { key: "communication_skill", label: "Communication", icon: MessageSquare, color: "#00E5FF" },
-  { key: "logical_reasoning", label: "Logic", icon: Lightbulb, color: "#00E5FF" },
+  { key: "math_score",           label: "Math Score",    icon: Brain,         color: "#00E5FF" },
+  { key: "programming_skill",    label: "Programming",   icon: Code,          color: "#00E5FF" },
+  { key: "communication_skill",  label: "Communication", icon: MessageSquare, color: "#00E5FF" },
+  { key: "logical_reasoning",    label: "Logic",         icon: Lightbulb,     color: "#00E5FF" },
 ];
 
 const INTERESTS = [
-  { value: "data", label: "Data & Analytics" },
-  { value: "coding", label: "Software Development" },
-  { value: "management", label: "Leadership & Management" },
-  { value: "design", label: "Design & Creative" },
+  { value: "data",           label: "Data & Analytics" },
+  { value: "coding",         label: "Software Development" },
+  { value: "management",     label: "Leadership & Management" },
+  { value: "design",         label: "Design & Creative" },
+  { value: "infrastructure", label: "Infrastructure & DevOps" },
+  { value: "ai_ml",          label: "AI & Machine Learning" },
+  { value: "security",       label: "Cybersecurity" },
+  { value: "product",        label: "Product Management" },
 ];
 
-export default function PredictionForm({ onSubmit, loading }) {
+export default function PredictionForm({ onSubmit, loading, prefillProfile }) {
   const [skills, setSkills] = useState({
     math_score: 50,
     programming_skill: 50,
@@ -35,6 +39,19 @@ export default function PredictionForm({ onSubmit, loading }) {
   });
   const [interest, setInterest] = useState("");
   const [modelKey, setModelKey] = useState("random_forest");
+
+  // Apply prefill from skill test
+  useEffect(() => {
+    if (prefillProfile) {
+      setSkills({
+        math_score: prefillProfile.math_score ?? 50,
+        programming_skill: prefillProfile.programming_skill ?? 50,
+        communication_skill: prefillProfile.communication_skill ?? 50,
+        logical_reasoning: prefillProfile.logical_reasoning ?? 50,
+      });
+      if (prefillProfile.interest) setInterest(prefillProfile.interest);
+    }
+  }, [prefillProfile]);
 
   const handleSliderChange = (key, value) => {
     setSkills((prev) => ({ ...prev, [key]: value[0] }));

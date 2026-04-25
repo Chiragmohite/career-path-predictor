@@ -7,8 +7,9 @@ import DashboardPage from "@/pages/DashboardPage";
 import ModelLabPage from "@/pages/ModelLabPage";
 import DatasetPage from "@/pages/DatasetPage";
 import HistoryPage from "@/pages/HistoryPage";
+import SkillTestPage from "@/pages/SkillTestPage";
 import { Toaster } from "sonner";
-import { Terminal, Activity, LogOut, FlaskConical, Database, Clock, Crosshair } from "lucide-react";
+import { Terminal, Activity, LogOut, FlaskConical, Database, Clock, Crosshair, Zap } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────
 //  ANIMATED BACKGROUND — career graph + data packets + stats
@@ -453,10 +454,11 @@ function ProtectedRoute({ children }) {
 //  NAV
 // ─────────────────────────────────────────────────────────────
 const NAV_ITEMS = [
-  { path: "/",          icon: Crosshair,   label: "Predict"   },
-  { path: "/model-lab", icon: FlaskConical, label: "Model Lab" },
-  { path: "/dataset",   icon: Database,    label: "Dataset"   },
-  { path: "/history",   icon: Clock,       label: "History"   },
+  { path: "/",           icon: Crosshair,    label: "Predict"    },
+  { path: "/skill-test", icon: Zap,          label: "Skill Test" },
+  { path: "/model-lab",  icon: FlaskConical, label: "Model Lab"  },
+  { path: "/dataset",    icon: Database,     label: "Dataset"    },
+  { path: "/history",    icon: Clock,        label: "History"    },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -546,10 +548,11 @@ function AppLayout() {
       {/* Page content — z-10 so it always sits above the canvas */}
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 relative z-10">
         <Routes>
-          <Route path="/"          element={<DashboardPage />} />
-          <Route path="/model-lab" element={<ModelLabPage />} />
-          <Route path="/dataset"   element={<DatasetPage />} />
-          <Route path="/history"   element={<HistoryPage />} />
+          <Route path="/"           element={<DashboardPage />} />
+          <Route path="/skill-test" element={<SkillTestPage />} />
+          <Route path="/model-lab"  element={<ModelLabPage />} />
+          <Route path="/dataset"    element={<DatasetPage />} />
+          <Route path="/history"    element={<HistoryPage />} />
         </Routes>
       </main>
     </div>
