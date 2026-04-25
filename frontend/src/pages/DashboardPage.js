@@ -11,7 +11,14 @@ import SkillRecommendations from "@/components/SkillRecommendations";
 import AiInsights from "@/components/AiInsights";
 import CareerRoadmap from "@/components/CareerRoadmap";
 import CareerCompare from "@/components/CareerCompare";
+<<<<<<< HEAD
 import { Cpu, Zap } from "lucide-react";
+=======
+import WhatIfSimulator from "@/components/WhatIfSimulator";
+import ShapExplainer from "@/components/ShapExplainer";
+import ResumeScanner from "@/components/ResumeScanner";
+import { Cpu } from "lucide-react";
+>>>>>>> d6cbf5fa183ecb04664172c29753bee2aed8bc04
 
 export default function DashboardPage() {
   const { token } = useAuth();
@@ -51,7 +58,6 @@ export default function DashboardPage() {
     try {
       const res = await axios.post(`${API}/predict`, formData, { headers });
       setPrediction(res.data);
-      // Save to history
       axios.post(`${API}/predictions/save`, formData, { headers }).catch(() => {});
       toast.success("Analysis complete");
     } catch (err) {
@@ -107,9 +113,18 @@ export default function DashboardPage() {
               </div>
               <SkillRecommendations prediction={prediction} />
               <AiInsights insights={aiInsights} loading={aiLoading} onGenerate={handleGetInsights} />
+<<<<<<< HEAD
               {prediction.roadmap && prediction.roadmap.length > 0 && (
                 <CareerRoadmap roadmap={prediction.roadmap} career={prediction.predicted_career} />
               )}
+=======
+              {prediction.roadmap?.length > 0 && (
+                <CareerRoadmap roadmap={prediction.roadmap} career={prediction.predicted_career} />
+              )}
+              <ShapExplainer lastFormData={lastFormData} />
+              <WhatIfSimulator lastFormData={lastFormData} />
+              <ResumeScanner predictedCareer={prediction.predicted_career} />
+>>>>>>> d6cbf5fa183ecb04664172c29753bee2aed8bc04
               <CareerCompare />
             </>
           ) : (
@@ -125,4 +140,9 @@ export default function DashboardPage() {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> d6cbf5fa183ecb04664172c29753bee2aed8bc04

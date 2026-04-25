@@ -237,6 +237,98 @@ async def career_comparison(career_a: str, career_b: str, current_user: dict = D
         raise HTTPException(status_code=400, detail=f"Careers must be from: {CAREERS}")
     return predictor.get_career_comparison(career_a, career_b)
 
+<<<<<<< HEAD
+=======
+
+# ─── SHAP Explainability ─────────────────────────────────────
+class ShapRequest(BaseModel):
+    math_score: float
+    programming_skill: float
+    communication_skill: float
+    logical_reasoning: float
+    interest: str
+    model_key: str = "random_forest"
+
+@api_router.post("/shap-explain")
+async def shap_explain(req: ShapRequest, current_user: dict = Depends(get_current_user)):
+    if not predictor.is_trained:
+        raise HTTPException(status_code=503, detail="Models not trained yet")
+    if req.interest not in INTERESTS:
+        raise HTTPException(status_code=400, detail=f"Interest must be one of: {INTERESTS}")
+    try:
+        explanation = predictor.get_shap_explanation(
+            req.math_score, req.programming_skill, req.communication_skill,
+            req.logical_reasoning, req.interest, req.model_key
+        )
+        return {"explanation": explanation}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ─── What-If Simulator ────────────────────────────────────────
+class WhatIfRequest(BaseModel):
+    math_score: float
+    programming_skill: float
+    communication_skill: float
+    logical_reasoning: float
+    interest: str
+    model_key: str = "random_forest"
+
+@api_router.post("/what-if")
+async def what_if(req: WhatIfRequest, current_user: dict = Depends(get_current_user)):
+    if not predictor.is_trained:
+        raise HTTPException(status_code=503, detail="Models not trained yet")
+    if req.interest not in INTERESTS:
+        raise HTTPException(status_code=400, detail=f"Interest must be one of: {INTERESTS}")
+    profile = {
+        "math_score": req.math_score, "programming_skill": req.programming_skill,
+        "communication_skill": req.communication_skill, "logical_reasoning": req.logical_reasoning,
+        "interest": req.interest,
+    }
+    return predictor.what_if_simulate(profile, req.model_key)
+
+
+# ─── Resume Scanner ───────────────────────────────────────────
+class ResumeRequest(BaseModel):
+    resume_text: str
+    predicted_career: str
+
+@api_router.post("/resume-scan")
+async def resume_scan(req: ResumeRequest, current_user: dict = Depends(get_current_user)):
+    from ai_insights import get_groq_client
+    client = get_groq_client()
+    if not client:
+        raise HTTPException(status_code=503, detail="AI service unavailable")
+
+    prompt = f"""You are a career coach and resume expert. Analyze this resume for a person whose ML-predicted career is: {req.predicted_career}
+
+RESUME:
+{req.resume_text[:3000]}
+
+Respond ONLY with valid JSON (no markdown, no explanation) in this exact format:
+{{
+  "match_score": <integer 0-100>,
+  "strengths": ["strength1", "strength2", "strength3"],
+  "missing_skills": ["skill1", "skill2", "skill3", "skill4"],
+  "quick_wins": ["actionable tip 1", "actionable tip 2", "actionable tip 3"],
+  "overall_verdict": "<2 sentence summary>"
+}}"""
+
+    try:
+        response = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=600,
+            temperature=0.3,
+        )
+        import json
+        raw = response.choices[0].message.content.strip()
+        data = json.loads(raw)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Resume scan failed: {str(e)}")
+
+>>>>>>> d6cbf5fa183ecb04664172c29753bee2aed8bc04
 @api_router.get("/")
 async def root():
     return {"message": "Career Path Predictor API", "status": "running"}
@@ -259,3 +351,4 @@ logger = logging.getLogger(__name__)
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+
