@@ -44,13 +44,13 @@ export default function ConfusionMatrixChart({ data, loading, modelName }) {
         </div>
         <span className="text-[10px] text-[#A1A1AA] font-mono">{modelName}</span>
       </div>
-      <div className="p-6">
-        <div className="flex justify-center">
-          <div>
+      <div className="p-4">
+        <div className="overflow-x-auto">
+          <div style={{ minWidth: "fit-content" }}>
             {/* Column headers */}
-            <div className="flex ml-12">
+            <div className="flex ml-8">
               {shortLabels.map((label, i) => (
-                <div key={i} className="w-14 text-center text-[10px] text-[#A1A1AA] font-mono font-bold pb-2">
+                <div key={i} className="w-10 text-center text-[9px] text-[#A1A1AA] font-mono font-bold pb-2 truncate">
                   {label}
                 </div>
               ))}
@@ -58,12 +58,12 @@ export default function ConfusionMatrixChart({ data, loading, modelName }) {
             {/* Matrix rows */}
             {matrix.map((row, i) => (
               <div key={i} className="flex items-center">
-                <div className="w-12 text-right pr-2 text-[10px] text-[#A1A1AA] font-mono font-bold">
+                <div className="w-8 text-right pr-1 text-[9px] text-[#A1A1AA] font-mono font-bold flex-shrink-0">
                   {shortLabels[i]}
                 </div>
                 {row.map((val, j) => (
                   <div key={j}
-                    className="w-14 h-12 flex items-center justify-center border border-white/5 text-xs font-mono font-bold transition-all hover:scale-110"
+                    className="w-10 h-9 flex items-center justify-center border border-white/5 text-[10px] font-mono font-bold"
                     style={{ backgroundColor: getColor(val), color: val > maxVal * 0.5 ? "#030305" : "#fff" }}
                     data-testid={`cm-cell-${i}-${j}`}>
                     {val}
