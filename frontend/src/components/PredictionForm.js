@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
@@ -30,7 +30,7 @@ const INTERESTS = [
   { value: "product",        label: "Product Management" },
 ];
 
-export default function PredictionForm({ onSubmit, loading, prefillProfile }) {
+export default function PredictionForm({ onSubmit, loading }) {
   const [skills, setSkills] = useState({
     math_score: 50,
     programming_skill: 50,
@@ -39,19 +39,6 @@ export default function PredictionForm({ onSubmit, loading, prefillProfile }) {
   });
   const [interest, setInterest] = useState("");
   const [modelKey, setModelKey] = useState("random_forest");
-
-  // Apply prefill from skill test
-  useEffect(() => {
-    if (prefillProfile) {
-      setSkills({
-        math_score: prefillProfile.math_score ?? 50,
-        programming_skill: prefillProfile.programming_skill ?? 50,
-        communication_skill: prefillProfile.communication_skill ?? 50,
-        logical_reasoning: prefillProfile.logical_reasoning ?? 50,
-      });
-      if (prefillProfile.interest) setInterest(prefillProfile.interest);
-    }
-  }, [prefillProfile]);
 
   const handleSliderChange = (key, value) => {
     setSkills((prev) => ({ ...prev, [key]: value[0] }));
