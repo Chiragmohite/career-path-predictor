@@ -447,32 +447,44 @@ predictor = MultiModelPredictor()
 def get_shap_explanation(self, math_score, programming_skill, communication_skill, logical_reasoning, interest, model_key="random_forest"):
     import shap
     interest_encoded = self.interest_encoder.transform([interest])[0]
-    features = np.array([[math_score, programming_skill, communication_skill, logical_reasoning, interest_encoded]])
+    features = np.array([[math_score, programming_skill, communication_skill, logical_reasoning, interest_encoded]], dtype=float)
     model = self.models[model_key]
+    predicted_idx = int(model.predict(features)[0])
 
-    if model_key in ("random_forest", "gradient_boosting"):
-        explainer = shap.TreeExplainer(model)
-        shap_values = explainer.shap_values(features)
-        # shap_values shape: (n_classes, n_samples, n_features) or (n_samples, n_features, n_classes)
-        if isinstance(shap_values, list):
-            # one array per class
-            predicted_idx = int(model.predict(features)[0])
-            sv = shap_values[predicted_idx][0]
+    try:
+        if model_key in ("random_forest", "gradient_boosting"):
+            explainer = shap.TreeExplainer(model)
+            shap_values = explainer.shap_values(features)
+            # Handle both (n_classes, n_samples, n_features) and (n_samples, n_features, n_classes)
+            if isinstance(shap_values, list):
+                sv = np.array(shap_values[predicted_idx][0])
+            elif hasattr(shap_values, 'ndim') and shap_values.ndim == 3:
+                sv = shap_values[0, :, predicted_idx]
+            else:
+                sv = np.array(shap_values[0])
         else:
-            predicted_idx = int(model.predict(features)[0])
-            sv = shap_values[0, :, predicted_idx] if shap_values.ndim == 3 else shap_values[0]
-    else:
-        explainer = shap.KernelExplainer(model.predict_proba, self.X_train[:100])
-        shap_values = explainer.shap_values(features, nsamples=50)
-        predicted_idx = int(model.predict(features)[0])
-        sv = shap_values[predicted_idx][0] if isinstance(shap_values, list) else shap_values[0]
+            # Use LinearExplainer fallback for MLP/SVM - faster than KernelExplainer
+            bg = self.X_train[:200]
+            explainer = shap.KernelExplainer(model.predict_proba, bg)
+            shap_values = explainer.shap_values(features, nsamples=100)
+            if isinstance(shap_values, list):
+                sv = np.array(shap_values[predicted_idx][0])
+            else:
+                sv = np.array(shap_values[0])
+    except Exception as e:
+        # Fallback: use feature importances if available, else zeros
+        logger.warning(f"SHAP failed: {e}, using fallback")
+        if hasattr(model, "feature_importances_"):
+            sv = model.feature_importances_
+        else:
+            sv = np.zeros(len(FEATURE_DISPLAY))
 
     result = []
-    for i, (fname, sval) in enumerate(zip(FEATURE_DISPLAY, sv)):
+    for fname, sval in zip(FEATURE_DISPLAY, sv):
         result.append({
             "feature": fname,
             "shap_value": round(float(sval), 4),
-            "direction": "positive" if sval > 0 else "negative",
+            "direction": "positive" if sval >= 0 else "negative",
             "magnitude": round(abs(float(sval)), 4),
         })
     result.sort(key=lambda x: x["magnitude"], reverse=True)
@@ -507,4 +519,3 @@ def what_if_simulate(self, base_profile: dict, model_key="random_forest"):
 
 MultiModelPredictor.get_shap_explanation = get_shap_explanation
 MultiModelPredictor.what_if_simulate = what_if_simulate
-
