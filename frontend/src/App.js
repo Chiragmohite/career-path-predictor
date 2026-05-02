@@ -8,6 +8,7 @@ import ModelLabPage from "@/pages/ModelLabPage";
 import DatasetPage from "@/pages/DatasetPage";
 import HistoryPage from "@/pages/HistoryPage";
 import SkillTestPage from "@/pages/SkillTestPage";
+import LandingPage from "@/components/LandingPage";
 import { Toaster } from "sonner";
 import { Terminal, Activity, LogOut, FlaskConical, Database, Clock, Crosshair, Zap } from "lucide-react";
 
@@ -447,7 +448,7 @@ function ProtectedRoute({ children }) {
       </div>
     </div>
   );
-  return user ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/landing" />;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -585,6 +586,7 @@ function App() {
         <AuthProvider>
           <div style={{ position: "relative", zIndex: 1 }}>
             <Routes>
+              <Route path="/landing" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route
                 path="/*"
