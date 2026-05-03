@@ -209,65 +209,159 @@ const LandingPage = () => {
       ].map((s, i) => <div key={i} style={{ position: 'fixed', width: 50, height: 50, zIndex: 11, ...s }} />)}
 
       {/* Top bar */}
-      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 36px' }}>
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 30, height: 30, border: '1.5px solid #00e5ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#00e5ff' }}>&gt;_</div>
-          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, letterSpacing: 4, color: 'rgba(0,229,255,0.5)', textTransform: 'uppercase' }}>Career Path Predictor</span>
+          <div style={{ width: 28, height: 28, border: '1.5px solid #00e5ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Space Mono', monospace", fontSize: 9, color: '#00e5ff', flexShrink: 0 }}>&gt;_</div>
+          <span className="hide-mobile" style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, letterSpacing: 4, color: 'rgba(0,229,255,0.5)', textTransform: 'uppercase' }}>Career Path Predictor</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#00e5ff', animation: 'pulse 2s infinite' }} />
-          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, letterSpacing: 3, color: 'rgba(0,229,255,0.4)', textTransform: 'uppercase' }}>ML Engine Active</span>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#00e5ff', animation: 'pulse 2s infinite', flexShrink: 0 }} />
+          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 8, letterSpacing: 2, color: 'rgba(0,229,255,0.4)', textTransform: 'uppercase' }}>ML Engine Active</span>
         </div>
       </div>
 
-      {/* Hero */}
-      <div style={{ position: 'fixed', top: 0, left: 0, bottom: 0, width: '50vw', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', paddingLeft: 'clamp(36px, 8vw, 120px)', paddingBottom: '60px' }}>
-
-        <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, letterSpacing: 6, color: 'rgba(0,229,255,0.6)', textTransform: 'uppercase', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 24, height: 1, background: '#00e5ff', opacity: 0.5 }} />
-          AI-Powered · ML Intelligence · Precision Career Mapping
-          <div style={{ width: 24, height: 1, background: '#00e5ff', opacity: 0.5 }} />
+      {/* Hero — desktop: left 50%, mobile: full width centered */}
+      <div className="hero-content">
+        <div className="tag-row">
+          <div style={{ width: 20, height: 1, background: '#00e5ff', opacity: 0.5, flexShrink: 0 }} />
+          <span>AI-Powered · ML Intelligence · Precision Career Mapping</span>
+          <div style={{ width: 20, height: 1, background: '#00e5ff', opacity: 0.5, flexShrink: 0 }} />
         </div>
 
-        <h1 style={{ fontFamily: "'Syne', sans-serif", fontSize: 'clamp(44px, 6vw, 80px)', fontWeight: 800, lineHeight: 0.88, letterSpacing: -3, color: '#ffffff', margin: 0, marginBottom: 8, textShadow: '0 0 80px rgba(0,229,255,0.15)' }}>
+        <h1 className="hero-h1">
           CAREER<br />
           <span style={{ color: '#00e5ff', textShadow: '0 0 40px rgba(0,229,255,0.5)' }}>PATH</span>
           <br />PREDICTOR
         </h1>
 
-        <div style={{ width: 'clamp(280px, 35vw, 480px)', height: 1, background: 'linear-gradient(90deg, #00e5ff, transparent)', margin: '24px 0', opacity: 0.4 }} />
+        <div className="divider-line" />
 
-        <p style={{ fontFamily: "'Space Mono', monospace", fontSize: 'clamp(11px, 1.2vw, 13px)', lineHeight: 1.8, color: 'rgba(200,220,240,0.5)', letterSpacing: 1, maxWidth: 420, marginBottom: 44 }}>
+        <p className="hero-sub">
           5 ensemble ML models · Groq LLaMA insights<br />
           SHAP explainability · Instant career roadmaps
         </p>
 
         <button
           onClick={() => navigate('/login')}
-          style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, letterSpacing: 4, textTransform: 'uppercase', padding: '18px 52px', background: 'transparent', color: '#00e5ff', border: '1px solid rgba(0,229,255,0.6)', cursor: 'pointer', clipPath: 'polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)', transition: 'all 0.3s', fontWeight: 700, boxShadow: '0 0 30px rgba(0,229,255,0.1), inset 0 0 30px rgba(0,229,255,0.03)' }}
+          className="cta-btn"
           onMouseEnter={e => { e.currentTarget.style.background = '#00e5ff'; e.currentTarget.style.color = '#000'; e.currentTarget.style.boxShadow = '0 0 60px rgba(0,229,255,0.4)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#00e5ff'; e.currentTarget.style.boxShadow = '0 0 30px rgba(0,229,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; }}
         >
           Initialize System →
         </button>
 
-        <div style={{ marginTop: 28, fontFamily: "'Space Mono', monospace", fontSize: 9, letterSpacing: 3, color: 'rgba(0,229,255,0.2)', textTransform: 'uppercase' }}>
+        <div style={{ marginTop: 24, fontFamily: "'Space Mono', monospace", fontSize: 8, letterSpacing: 3, color: 'rgba(0,229,255,0.18)', textTransform: 'uppercase' }}>
           v2.0 · Ensemble Model · 5 Algorithms · LLaMA-3 Powered
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div style={{ position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)', fontFamily: "'Space Mono', monospace", fontSize: 8, letterSpacing: 5, color: 'rgba(0,229,255,0.25)', zIndex: 11, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 10, whiteSpace: 'nowrap' }}>
-        <div style={{ width: 1, height: 12, background: 'rgba(0,229,255,0.2)' }} />
+      {/* Bottom bar — hide on very small screens */}
+      <div className="status-bottom">
+        <div style={{ width: 1, height: 10, background: 'rgba(0,229,255,0.2)' }} />
         System Online
-        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#00e5ff', opacity: 0.4, animation: 'pulse 2s infinite' }} />
+        <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#00e5ff', opacity: 0.35, animation: 'pulse 2s infinite' }} />
         All Models Loaded
-        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#00e5ff', opacity: 0.4, animation: 'pulse 2s infinite' }} />
+        <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#00e5ff', opacity: 0.35, animation: 'pulse 2s infinite' }} />
         Secure Connection
-        <div style={{ width: 1, height: 12, background: 'rgba(0,229,255,0.2)' }} />
+        <div style={{ width: 1, height: 10, background: 'rgba(0,229,255,0.2)' }} />
       </div>
 
-      <style>{`@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.8)}}`}</style>
+      <style>{`
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.8)}}
+
+        /* ── DESKTOP ── */
+        .hero-content{
+          position:fixed;top:0;left:0;bottom:0;
+          width:50vw;
+          z-index:10;
+          display:flex;flex-direction:column;
+          align-items:flex-start;justify-content:center;
+          padding-left:clamp(28px,7vw,100px);
+          padding-bottom:60px;
+          padding-right:20px;
+        }
+        .tag-row{
+          font-family:'Space Mono',monospace;
+          font-size:9px;letter-spacing:5px;
+          color:rgba(0,229,255,0.6);
+          text-transform:uppercase;
+          margin-bottom:16px;
+          display:flex;align-items:center;gap:8px;
+          flex-wrap:wrap;
+        }
+        .hero-h1{
+          font-family:'Syne',sans-serif;
+          font-size:clamp(44px,6vw,82px);
+          font-weight:800;line-height:0.88;
+          letter-spacing:-3px;color:#fff;
+          margin:0 0 8px;
+          text-shadow:0 0 80px rgba(0,229,255,0.15);
+        }
+        .divider-line{
+          width:clamp(200px,30vw,400px);
+          height:1px;
+          background:linear-gradient(90deg,#00e5ff,transparent);
+          margin:20px 0;opacity:0.35;
+        }
+        .hero-sub{
+          font-family:'Space Mono',monospace;
+          font-size:clamp(10px,1.1vw,12px);
+          line-height:1.9;
+          color:rgba(200,220,240,0.45);
+          letter-spacing:1px;
+          max-width:380px;
+          margin-bottom:36px;
+        }
+        .cta-btn{
+          font-family:'Space Mono',monospace;
+          font-size:11px;letter-spacing:4px;
+          text-transform:uppercase;
+          padding:15px 44px;
+          background:transparent;color:#00e5ff;
+          border:1px solid rgba(0,229,255,0.6);
+          cursor:pointer;font-weight:700;
+          clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+          transition:all .3s;
+          box-shadow:0 0 24px rgba(0,229,255,0.08);
+        }
+        .status-bottom{
+          position:fixed;bottom:18px;left:50%;
+          transform:translateX(-50%);
+          font-family:'Space Mono',monospace;
+          font-size:7px;letter-spacing:4px;
+          color:rgba(0,229,255,0.22);
+          z-index:11;text-transform:uppercase;
+          display:flex;align-items:center;gap:8px;
+          white-space:nowrap;
+        }
+
+        /* ── MOBILE ── */
+        @media(max-width:640px){
+          .hero-content{
+            width:100vw;
+            align-items:center;
+            text-align:center;
+            padding-left:24px;
+            padding-right:24px;
+            padding-bottom:80px;
+            background:rgba(4,7,13,0.55);
+            backdrop-filter:blur(4px);
+          }
+          .tag-row{justify-content:center;font-size:7px;letter-spacing:3px}
+          .hero-h1{font-size:clamp(48px,14vw,72px);letter-spacing:-2px}
+          .divider-line{width:80%;margin:16px auto}
+          .hero-sub{font-size:10px;text-align:center;max-width:90vw}
+          .cta-btn{padding:14px 36px;font-size:10px;letter-spacing:3px;width:100%;max-width:280px}
+          .status-bottom{display:none}
+          .hide-mobile{display:none}
+        }
+
+        /* ── TABLET ── */
+        @media(min-width:641px) and (max-width:900px){
+          .hero-content{width:58vw}
+          .hero-h1{font-size:clamp(38px,6vw,60px)}
+        }
+      `}</style>
     </div>
   );
 };
