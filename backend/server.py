@@ -330,17 +330,6 @@ Respond ONLY with valid JSON (no markdown, no explanation) in this exact format:
 async def root():
     return {"message": "Career Path Predictor API", "status": "running"}
 
-app.include_router(api_router)
-
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', 'http://localhost:3000').split(','),
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
