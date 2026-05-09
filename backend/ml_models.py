@@ -254,13 +254,19 @@ class MultiModelPredictor:
         self.df = generate_dataset()
         self.interest_encoder.fit(INTERESTS)
         self.df["interest_encoded"] = self.interest_encoder.transform(self.df["interest"])
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.pipeline import Pipeline
         X = self.df[FEATURES].values
         y = self.label_encoder.fit_transform(self.df["career"])
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
             X, y, test_size=0.2, random_state=42
         )
         for key in MODEL_CONFIGS:
-            model = self._create_model(key)
+            base_model = self._create_model(key)
+            if key in ["mlp", "svm", "knn"]:
+                model = Pipeline([("scaler", StandardScaler()), ("model", base_model)])
+            else:
+                model = base_model
             model.fit(self.X_train, self.y_train)
             y_pred = model.predict(self.X_test)
             self.models[key] = model
@@ -318,7 +324,9 @@ class MultiModelPredictor:
         }
         skill_gaps = {s: max(0, target.get(s, 0) - user_skills.get(s, 0)) for s in target}
 
-        feature_importance = self.get_feature_importance(model_key)
+        feature_importance = {}
+        if hasattr(model, "feature_importances_"):
+            feature_importance = dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in model.feature_importances_]))
 
         roadmap = CAREER_ROADMAPS.get(predicted_career, [])
 
