@@ -290,7 +290,9 @@ class MultiModelPredictor:
     def predict(self, math_score, programming_skill, communication_skill, logical_reasoning, interest, model_key="random_forest"):
         interest_encoded = self.interest_encoder.transform([interest])[0]
         features = np.array([[math_score, programming_skill, communication_skill, logical_reasoning, interest_encoded]])
-        model = self.models[model_key]
+        model = self.models.get(model_key)
+        if not model:
+            raise ValueError(f"Model '{model_key}' not ready yet, please retry in a moment.")
 
         if hasattr(model, "predict_proba"):
             probabilities = model.predict_proba(features)[0]
