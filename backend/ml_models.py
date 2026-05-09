@@ -427,8 +427,25 @@ class MultiModelPredictor:
 
     def get_feature_importance(self, model_key="random_forest"):
         model = self.models.get(model_key)
-        if model and hasattr(model, "feature_importances_"):
+        if not model:
+            return {}
+        # Tree-based models: use built-in feature importances
+        if hasattr(model, "feature_importances_"):
             return dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in model.feature_importances_]))
+        # KNN, SVM, MLP: use permutation importance
+        if self.X_test is not None and self.y_test is not None:
+            try:
+                from sklearn.inspection import permutation_importance
+                result = permutation_importance(model, self.X_test, self.y_test, n_repeats=10, random_state=42, n_jobs=-1)
+                importances = result.importances_mean
+                importances = importances - importances.min()
+                total = importances.sum()
+                if total > 0:
+                    importances = importances / total
+                return dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in importances]))
+            except Exception as e:
+                logger.error(f"Permutation importance failed for {model_key}: {e}")
+                return {}
         return {}
 
     def get_career_comparison(self, career_a, career_b):
