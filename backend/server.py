@@ -18,7 +18,7 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 mongo_url = os.environ.get("MONGO_URL", "mongodb://127.0.0.1:27017")
-client = AsyncIOMotorClient(mongo_url)
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 db = client["career_db"]
 
 app = FastAPI()
@@ -307,11 +307,10 @@ class ResumeRequest(BaseModel):
 
 @api_router.post("/resume-scan")
 async def resume_scan(req: ResumeRequest, current_user: dict = Depends(get_current_user)):
-    from ai_insights import get_groq_client
-    client = get_groq_client()
-    if not client:
+    if not GROQ_API_KEY:
         raise HTTPException(status_code=503, detail="AI service unavailable")
-
+    from groq import AsyncGroq
+    groq_client = AsyncGroq(api_key=GROQ_API_KEY)
     prompt = f"""You are a career coach and resume expert. Analyze this resume for a person whose ML-predicted career is: {req.predicted_career}
 
 RESUME:
@@ -325,9 +324,8 @@ Respond ONLY with valid JSON (no markdown, no explanation) in this exact format:
   "quick_wins": ["actionable tip 1", "actionable tip 2", "actionable tip 3"],
   "overall_verdict": "<2 sentence summary>"
 }}"""
-
     try:
-        response = client.chat.completions.create(
+        response = await groq_client.chat.completions.create(
             model="llama3-8b-8192",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=600,
@@ -335,11 +333,9 @@ Respond ONLY with valid JSON (no markdown, no explanation) in this exact format:
         )
         import json
         raw = response.choices[0].message.content.strip()
-        data = json.loads(raw)
-        return data
+        return json.loads(raw)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Resume scan failed: {str(e)}")
-
 @api_router.get("/")
 async def root():
     return {"message": "Career Path Predictor API", "status": "running"}
