@@ -324,9 +324,7 @@ class MultiModelPredictor:
         }
         skill_gaps = {s: max(0, target.get(s, 0) - user_skills.get(s, 0)) for s in target}
 
-        feature_importance = {}
-        if hasattr(model, "feature_importances_"):
-            feature_importance = dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in model.feature_importances_]))
+        feature_importance = self.get_feature_importance(model_key)
 
         roadmap = CAREER_ROADMAPS.get(predicted_career, [])
 
