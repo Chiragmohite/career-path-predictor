@@ -506,19 +506,28 @@ def get_shap_explanation(self, math_score, programming_skill, communication_skil
             else:
                 sv = np.array(shap_values[0])
         else:
-            # MLP/SVM/KNN: KernelExplainer with small background to avoid timeout
-            bg = shap.sample(self.X_train, 50)
-            explainer = shap.KernelExplainer(model.predict_proba, bg)
-            shap_values = explainer.shap_values(features, nsamples=50)
-            if isinstance(shap_values, list):
-                sv = np.array(shap_values[predicted_idx][0])
+            # MLP: use coefs_ weight magnitudes (instant, no timeout risk)
+            base_model = model.named_steps["model"] if hasattr(model, "named_steps") else model
+            if hasattr(base_model, "coefs_"):
+                sv = np.mean(np.abs(base_model.coefs_[0]), axis=1)
+                sv = sv / sv.sum() if sv.sum() > 0 else sv
             else:
-                sv = np.array(shap_values[0])
+                # SVM/KNN fallback: KernelExplainer with tiny background
+                bg = shap.sample(self.X_train, 20)
+                explainer = shap.KernelExplainer(model.predict_proba, bg)
+                shap_values = explainer.shap_values(features, nsamples=20)
+                if isinstance(shap_values, list):
+                    sv = np.array(shap_values[predicted_idx][0])
+                else:
+                    sv = np.array(shap_values[0])
     except Exception as e:
         # Fallback: use feature importances if available, else zeros
         logger.warning(f"SHAP failed: {e}, using fallback")
-        if hasattr(model, "feature_importances_"):
-            sv = model.feature_importances_
+        base_model = model.named_steps["model"] if hasattr(model, "named_steps") else model
+        if hasattr(base_model, "feature_importances_"):
+            sv = base_model.feature_importances_
+        elif hasattr(base_model, "coefs_"):
+            sv = np.mean(np.abs(base_model.coefs_[0]), axis=1)
         else:
             sv = np.zeros(len(FEATURE_DISPLAY))
 
