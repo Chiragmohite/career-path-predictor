@@ -19,7 +19,8 @@ load_dotenv(ROOT_DIR / '.env')
 
 mongo_url = os.environ.get("MONGO_URL", "mongodb://127.0.0.1:27017")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
-db = client["career_db"]
+mongo_client = AsyncIOMotorClient(mongo_url)
+db = mongo_client["career_db"]
 
 app = FastAPI()
 
@@ -357,6 +358,6 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    mongo_client.close()
 
 app.include_router(api_router)
