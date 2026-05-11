@@ -441,10 +441,30 @@ class MultiModelPredictor:
         if hasattr(model, "feature_importances_"):
             return dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in model.feature_importances_]))
         # KNN, SVM, MLP: use permutation importance
+        # Unwrap Pipeline to get base estimator
+        base_model = model.named_steps["model"] if hasattr(model, "named_steps") else model
+
+        # MLP: use first-layer weight magnitudes
+        if hasattr(base_model, "coefs_"):
+            importances = np.mean(np.abs(base_model.coefs_[0]), axis=1)
+            total = importances.sum()
+            if total > 0:
+                importances = importances / total
+            return dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in importances]))
+
+        # SVM linear kernel
+        if hasattr(base_model, "coef_"):
+            importances = np.mean(np.abs(base_model.coef_), axis=0)
+            total = importances.sum()
+            if total > 0:
+                importances = importances / total
+            return dict(zip(FEATURE_DISPLAY, [round(float(x), 4) for x in importances]))
+
+        # KNN fallback: permutation importance
         if self.X_test is not None and self.y_test is not None:
             try:
                 from sklearn.inspection import permutation_importance
-                result = permutation_importance(model, self.X_test, self.y_test, n_repeats=10, random_state=42, n_jobs=-1)
+                result = permutation_importance(model, self.X_test, self.y_test, n_repeats=5, random_state=42, n_jobs=1)
                 importances = result.importances_mean
                 importances = importances - importances.min()
                 total = importances.sum()
@@ -488,10 +508,10 @@ def get_shap_explanation(self, math_score, programming_skill, communication_skil
             else:
                 sv = np.array(shap_values[0])
         else:
-            # Use LinearExplainer fallback for MLP/SVM - faster than KernelExplainer
-            bg = self.X_train[:200]
+            # MLP/SVM/KNN: KernelExplainer with small background to avoid timeout
+            bg = shap.sample(self.X_train, 50)
             explainer = shap.KernelExplainer(model.predict_proba, bg)
-            shap_values = explainer.shap_values(features, nsamples=100)
+            shap_values = explainer.shap_values(features, nsamples=50)
             if isinstance(shap_values, list):
                 sv = np.array(shap_values[predicted_idx][0])
             else:
